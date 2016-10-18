@@ -8,19 +8,23 @@ namespace OneOf
 <#
     for (var i = 1; i < 10; i++)
     {
-        var typeArguments = new List<string>();
-        for(var j = 0; j < i; j++)
+        for (var type = 0; type < 2; type++)
         {
-            typeArguments.Add($"T{j}");
-        }
-        var genericArg = String.Join(", ", typeArguments);
+            var typeEnding = type == 0 ? "" : "Base";
+            var structOrClass = type == 0 ? "struct" : "class";
+            var typeArguments = new List<string>();
+            for (var j = 0; j < i; j++)
+            {
+                typeArguments.Add($"T{j}");
+            }
+            var genericArg = String.Join(", ", typeArguments);
 #>
-    public struct OneOf<<#= genericArg #>> : IOneOf
+    public <#=structOrClass#> OneOf<#=typeEnding#><<#= genericArg #>> : IOneOf
     {
         private readonly object _value;
         private readonly int _index;
 
-        private OneOf(object value, int index)
+        private OneOf<#=typeEnding#>(object value, int index)
         {
             _value = value;
             _index = index;
@@ -38,8 +42,8 @@ namespace OneOf
             return (T)_value;
         }
 <#
-        for (var j = 0; j < i; j++)
-        {
+            for (var j = 0; j < i; j++)
+            {
 #>
 
         public bool IsT<#= j #>
@@ -48,23 +52,23 @@ namespace OneOf
         public T<#= j #> AsT<#= j #>
             => Get<T<#= j #>>(<#= j #>);
 
-        public static implicit operator OneOf<<#= genericArg #>> (T<#=j#> t)
-            => new OneOf<<#= genericArg #>>(t, <#= j #>);
+        public static implicit operator OneOf<#=typeEnding#><<#= genericArg #>> (T<#=j #> t)
+            => new OneOf<#=typeEnding#><<#= genericArg #>>(t, <#= j #>);
 <#
-        }
-        var switchArguments = new List<string>();
-        for(var j = 0; j < i; j++)
-        {
-            switchArguments.Add($"Action<T{j}> f{j}");
-        }
-        var matchArgList0 = String.Join(", ", switchArguments);
+            }
+            var switchArguments = new List<string>();
+            for (var j = 0; j < i; j++)
+            {
+                switchArguments.Add($"Action<T{j}> f{j}");
+            }
+            var matchArgList0 = String.Join(", ", switchArguments);
 #>
 
         public void Switch(<#= matchArgList0 #>)
         {
 <#
-        for (var j = 0; j < i; j++)
-        {
+            for (var j = 0; j < i; j++)
+            {
 #>
             if (IsT<#= j #> && f<#= j #> != null)
             {
@@ -73,24 +77,24 @@ namespace OneOf
             }
 
 <#
-        }
+            }
 #>
             throw new InvalidOperationException();
         }
 
 <#
-        var matchArguments = new List<string>();
-        for(var j = 0; j < i; j++)
-        {
-            matchArguments.Add($"Func<T{j}, TResult> f{j}");
-        }
-        var matchArgList = String.Join(", ", matchArguments);
+            var matchArguments = new List<string>();
+            for (var j = 0; j < i; j++)
+            {
+                matchArguments.Add($"Func<T{j}, TResult> f{j}");
+            }
+            var matchArgList = String.Join(", ", matchArguments);
 #>
         public TResult Match<TResult>(<#= matchArgList #>)
         {
 <#
-        for (var j = 0; j < i; j++)
-        {
+            for (var j = 0; j < i; j++)
+            {
 #>
             if (IsT<#= j #> && f<#= j #> != null)
             {
@@ -98,19 +102,19 @@ namespace OneOf
             }
 
 <#
-        }
+            }
 #>
             throw new InvalidOperationException();
         }
 
 <#
-        matchArgList = String.Join(" = null, ", matchArguments);
+            matchArgList = String.Join(" = null, ", matchArguments);
 #>
         public TResult MatchSome<TResult>(<#= matchArgList #> = null, Func<TResult> otherwise = null)
         {
 <#
-        for (var j = 0; j < i; j++)
-        {
+            for (var j = 0; j < i; j++)
+            {
 #>
             if (IsT<#= j #> && f<#= j #> != null)
             {
@@ -118,7 +122,7 @@ namespace OneOf
             }
 
 <#
-        }
+            }
 #>
             if (otherwise != null)
             {
@@ -127,8 +131,32 @@ namespace OneOf
 
             throw new InvalidOperationException();
         }
+<#
+            if(type == 1)
+            {
+#>
 
-        private bool Equals(OneOf<<#=genericArg#>> other)
+        protected OneOfBase()
+        {
+            _value = this;
+<#
+                for (var j = 0; j < i; j++)
+                {
+#>
+
+            if (this is T<#= j #>)
+            {
+                _index = <#= j #>;
+            }
+<#
+                }
+#>
+        }
+<#
+            }
+#>
+
+        private bool Equals(OneOf<#=typeEnding#><<#=genericArg #>> other)
             => _index == other._index && Equals(_value, other._value);
 
         public override bool Equals(object obj)
@@ -137,8 +165,28 @@ namespace OneOf
             {
                 return false;
             }
+<#
+            if(type == 1)
+            {
+#>
 
-            return obj is OneOf<<#=genericArg#>> && Equals((OneOf<<#=genericArg#>>) obj);
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            var other = obj as OneOfBase<<#=genericArg#>>;
+            return other != null && Equals(other);
+<#
+            }
+            else
+            {
+#>
+
+            return obj is OneOf<#=typeEnding#><<#=genericArg #>> && Equals((OneOf<#=typeEnding#><<#=genericArg #>>) obj);
+<#
+            }
+#>
         }
 
         public override int GetHashCode()
@@ -151,6 +199,7 @@ namespace OneOf
     }
 
 <#
+        }
     }
 #>
 }
