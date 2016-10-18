@@ -1,5 +1,4 @@
-
-using System;
+﻿using System;
 
 namespace OneOf
 {
@@ -63,7 +62,10 @@ namespace OneOf
                 return f0(AsT0);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -154,6 +156,7 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
@@ -169,6 +172,7 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
@@ -183,12 +187,16 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -293,11 +301,13 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
@@ -313,10 +323,12 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
@@ -331,16 +343,21 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -459,16 +476,19 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
@@ -484,14 +504,17 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
@@ -506,20 +529,26 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -652,21 +681,25 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
                 return;
             }
+
             if (IsT4 && f4 != null)
             {
                 f4(AsT4);
@@ -682,18 +715,22 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
@@ -708,24 +745,31 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -872,26 +916,31 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
                 return;
             }
+
             if (IsT4 && f4 != null)
             {
                 f4(AsT4);
                 return;
             }
+
             if (IsT5 && f5 != null)
             {
                 f5(AsT5);
@@ -907,22 +956,27 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
@@ -937,28 +991,36 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -1119,31 +1181,37 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
                 return;
             }
+
             if (IsT4 && f4 != null)
             {
                 f4(AsT4);
                 return;
             }
+
             if (IsT5 && f5 != null)
             {
                 f5(AsT5);
                 return;
             }
+
             if (IsT6 && f6 != null)
             {
                 f6(AsT6);
@@ -1159,26 +1227,32 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
@@ -1193,32 +1267,41 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -1393,36 +1476,43 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
                 return;
             }
+
             if (IsT4 && f4 != null)
             {
                 f4(AsT4);
                 return;
             }
+
             if (IsT5 && f5 != null)
             {
                 f5(AsT5);
                 return;
             }
+
             if (IsT6 && f6 != null)
             {
                 f6(AsT6);
                 return;
             }
+
             if (IsT7 && f7 != null)
             {
                 f7(AsT7);
@@ -1438,30 +1528,37 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
             }
+
             if (IsT7 && f7 != null)
             {
                 return f7(AsT7);
@@ -1476,36 +1573,46 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
             }
+
             if (IsT7 && f7 != null)
             {
                 return f7(AsT7);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
@@ -1694,41 +1801,49 @@ namespace OneOf
                 f0(AsT0);
                 return;
             }
+
             if (IsT1 && f1 != null)
             {
                 f1(AsT1);
                 return;
             }
+
             if (IsT2 && f2 != null)
             {
                 f2(AsT2);
                 return;
             }
+
             if (IsT3 && f3 != null)
             {
                 f3(AsT3);
                 return;
             }
+
             if (IsT4 && f4 != null)
             {
                 f4(AsT4);
                 return;
             }
+
             if (IsT5 && f5 != null)
             {
                 f5(AsT5);
                 return;
             }
+
             if (IsT6 && f6 != null)
             {
                 f6(AsT6);
                 return;
             }
+
             if (IsT7 && f7 != null)
             {
                 f7(AsT7);
                 return;
             }
+
             if (IsT8 && f8 != null)
             {
                 f8(AsT8);
@@ -1744,34 +1859,42 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
             }
+
             if (IsT7 && f7 != null)
             {
                 return f7(AsT7);
             }
+
             if (IsT8 && f8 != null)
             {
                 return f8(AsT8);
@@ -1786,40 +1909,51 @@ namespace OneOf
             {
                 return f0(AsT0);
             }
+
             if (IsT1 && f1 != null)
             {
                 return f1(AsT1);
             }
+
             if (IsT2 && f2 != null)
             {
                 return f2(AsT2);
             }
+
             if (IsT3 && f3 != null)
             {
                 return f3(AsT3);
             }
+
             if (IsT4 && f4 != null)
             {
                 return f4(AsT4);
             }
+
             if (IsT5 && f5 != null)
             {
                 return f5(AsT5);
             }
+
             if (IsT6 && f6 != null)
             {
                 return f6(AsT6);
             }
+
             if (IsT7 && f7 != null)
             {
                 return f7(AsT7);
             }
+
             if (IsT8 && f8 != null)
             {
                 return f8(AsT8);
             }
 
-            if (otherwise != null) { return otherwise(); }
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
 
             throw new InvalidOperationException();
         }
