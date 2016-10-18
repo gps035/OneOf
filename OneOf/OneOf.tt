@@ -19,26 +19,65 @@ namespace OneOf
             var typeName = constructorName + $"<{String.Join(", ", typeArguments)}>";
 #>
     public <#=type == 0 ? "struct" : "class"#> <#=typeName#> : IOneOf
+<#
+        if (type == 1)
+        {
+            for (var j = 0; j < i; j++)
+            {
+#>
+    where T<#=j#> : class
+<#
+            }
+        }
+#>
     {
-        private readonly object _value;
+<#
+            for (var j = 0; j < i; j++)
+            {
+#>
+        private readonly T<#=j#> _value<#=j#>;
+<#
+            }
+#>
         private readonly int _index;
 
-        private <#=constructorName#>(object value, int index)
+        private <#=constructorName#>(int index<#
+            for (var j = 0; j < i; j++)
+            {
+#>, T<#=j#> value<#=j#> = default(T<#=j#>)<#
+            }
+#>)
         {
-            _value = value;
+<#
+            for (var j = 0; j < i; j++)
+            {
+#>
+            _value<#=j#> = value<#=j#>;
+<#
+            }
+#>
             _index = index;
         }
 
         object IOneOf.Value
-            => _value;
-
-        private T Get<T>(int index)
         {
-            if (index != _index)
+            get
             {
-                throw new InvalidOperationException($"Cannot return as T{index} as result is T{_index}");
+                switch(_index)
+                {
+<#
+            for (var j = 0; j < i; j++)
+            {
+#>
+                    case <#=j#>:
+                        return _value<#=j#>;
+<#
             }
-            return (T)_value;
+#>
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
         }
 <#
             for (var j = 0; j < i; j++)
@@ -49,10 +88,10 @@ namespace OneOf
             => _index == <#=j#>;
 
         public T<#=j#> AsT<#=j#>
-            => Get<T<#=j#>>(<#=j#>);
+            => _value<#=j#>;
 
         public static implicit operator <#=typeName#> (T<#=j #> t)
-            => new <#=typeName#>(t, <#=j#>);
+            => new <#=typeName#>(<#=j#>, value<#=j#>: t);
 <#
             }
             var switchArguments = new List<string>();
@@ -71,7 +110,7 @@ namespace OneOf
 #>
             if (IsT<#=j#> && f<#=j#> != null)
             {
-                f<#=j#>(AsT<#=j#>);
+                f<#=j#>(_value<#=j#>);
                 return;
             }
 
@@ -97,7 +136,7 @@ namespace OneOf
 #>
             if (IsT<#=j#> && f<#=j#> != null)
             {
-                return f<#=j#>(AsT<#=j#>);
+                return f<#=j#>(_value<#=j#>);
             }
 
 <#
@@ -118,7 +157,7 @@ namespace OneOf
 #>
             if (IsT<#=j#> && f<#=j#> != null)
             {
-                return f<#=j#>(AsT<#=j#>);
+                return f<#=j#>(_value<#=j#>);
             }
 
 <#
@@ -138,15 +177,15 @@ namespace OneOf
 
         protected <#=constructorName#>()
         {
-            _value = this;
 <#
                 for (var j = 0; j < i; j++)
                 {
 #>
-
-            if (this is T<#=j#>)
+            var value<#=j#> = this as T<#=j#>;
+            if (value<#=j#> != null)
             {
                 _index = <#=j#>;
+                _value<#=j#> = value<#=j#>;
             }
 <#
                 }
@@ -157,7 +196,26 @@ namespace OneOf
 #>
 
         private bool Equals(<#=typeName#> other)
-            => _index == other._index && Equals(_value, other._value);
+        {
+            if(_index != other._index)
+            {
+                return false;
+            }
+            switch(_index)
+            {
+<#
+            for (var j = 0; j < i; j++)
+            {
+#>
+                case <#=j#>:
+                    return Equals(_value<#=j#>, other._value<#=j#>);
+<#
+            }
+#>
+                default:
+                    return false;
+            }
+        }
 
         public override bool Equals(object obj)
         {
@@ -193,7 +251,24 @@ namespace OneOf
         {
             unchecked
             {
-                return ((_value?.GetHashCode() ?? 0)*397) ^ _index;
+                int hashCode;
+                switch(_index)
+                {
+<#
+            for (var j = 0; j < i; j++)
+            {
+#>
+                    case <#=j#>:
+                        hashCode = _value<#=j#>.GetHashCode();
+                        break;
+<#
+            }
+#>
+                    default:
+                        hashCode = 0;
+                        break;
+                }
+                return (hashCode*397) ^ _index;
             }
         }
     }
