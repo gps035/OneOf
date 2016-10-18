@@ -10,21 +10,20 @@ namespace OneOf
     {
         for (var type = 0; type < 2; type++)
         {
-            var typeEnding = type == 0 ? "" : "Base";
-            var structOrClass = type == 0 ? "struct" : "class";
+            var constructorName = type == 0 ? "OneOf" : "OneOfBase";
             var typeArguments = new List<string>();
             for (var j = 0; j < i; j++)
             {
                 typeArguments.Add($"T{j}");
             }
-            var genericArg = String.Join(", ", typeArguments);
+            var typeName = constructorName + $"<{String.Join(", ", typeArguments)}>";
 #>
-    public <#=structOrClass#> OneOf<#=typeEnding#><<#= genericArg #>> : IOneOf
+    public <#=type == 0 ? "struct" : "class"#> <#=typeName#> : IOneOf
     {
         private readonly object _value;
         private readonly int _index;
 
-        private OneOf<#=typeEnding#>(object value, int index)
+        private <#=constructorName#>(object value, int index)
         {
             _value = value;
             _index = index;
@@ -46,14 +45,14 @@ namespace OneOf
             {
 #>
 
-        public bool IsT<#= j #>
-            => _index == <#= j #>;
+        public bool IsT<#=j#>
+            => _index == <#=j#>;
 
-        public T<#= j #> AsT<#= j #>
-            => Get<T<#= j #>>(<#= j #>);
+        public T<#=j#> AsT<#=j#>
+            => Get<T<#=j#>>(<#=j#>);
 
-        public static implicit operator OneOf<#=typeEnding#><<#= genericArg #>> (T<#=j #> t)
-            => new OneOf<#=typeEnding#><<#= genericArg #>>(t, <#= j #>);
+        public static implicit operator <#=typeName#> (T<#=j #> t)
+            => new <#=typeName#>(t, <#=j#>);
 <#
             }
             var switchArguments = new List<string>();
@@ -61,18 +60,18 @@ namespace OneOf
             {
                 switchArguments.Add($"Action<T{j}> f{j}");
             }
-            var matchArgList0 = String.Join(", ", switchArguments);
+            var switchArgs = String.Join(", ", switchArguments);
 #>
 
-        public void Switch(<#= matchArgList0 #>)
+        public void Switch(<#=switchArgs#>)
         {
 <#
             for (var j = 0; j < i; j++)
             {
 #>
-            if (IsT<#= j #> && f<#= j #> != null)
+            if (IsT<#=j#> && f<#=j#> != null)
             {
-                f<#= j #>(AsT<#= j #>);
+                f<#=j#>(AsT<#=j#>);
                 return;
             }
 
@@ -88,17 +87,17 @@ namespace OneOf
             {
                 matchArguments.Add($"Func<T{j}, TResult> f{j}");
             }
-            var matchArgList = String.Join(", ", matchArguments);
+            var matchArgs = String.Join(", ", matchArguments);
 #>
-        public TResult Match<TResult>(<#= matchArgList #>)
+        public TResult Match<TResult>(<#=matchArgs#>)
         {
 <#
             for (var j = 0; j < i; j++)
             {
 #>
-            if (IsT<#= j #> && f<#= j #> != null)
+            if (IsT<#=j#> && f<#=j#> != null)
             {
-                return f<#= j #>(AsT<#= j #>);
+                return f<#=j#>(AsT<#=j#>);
             }
 
 <#
@@ -108,17 +107,18 @@ namespace OneOf
         }
 
 <#
-            matchArgList = String.Join(" = null, ", matchArguments);
+            const string ending = " = null, ";
+            matchArgs = String.Join(ending, matchArguments) + ending + "Func<TResult> otherwise = null";
 #>
-        public TResult MatchSome<TResult>(<#= matchArgList #> = null, Func<TResult> otherwise = null)
+        public TResult MatchSome<TResult>(<#=matchArgs#>)
         {
 <#
             for (var j = 0; j < i; j++)
             {
 #>
-            if (IsT<#= j #> && f<#= j #> != null)
+            if (IsT<#=j#> && f<#=j#> != null)
             {
-                return f<#= j #>(AsT<#= j #>);
+                return f<#=j#>(AsT<#=j#>);
             }
 
 <#
@@ -136,7 +136,7 @@ namespace OneOf
             {
 #>
 
-        protected OneOfBase()
+        protected <#=constructorName#>()
         {
             _value = this;
 <#
@@ -144,9 +144,9 @@ namespace OneOf
                 {
 #>
 
-            if (this is T<#= j #>)
+            if (this is T<#=j#>)
             {
-                _index = <#= j #>;
+                _index = <#=j#>;
             }
 <#
                 }
@@ -156,7 +156,7 @@ namespace OneOf
             }
 #>
 
-        private bool Equals(OneOf<#=typeEnding#><<#=genericArg #>> other)
+        private bool Equals(<#=typeName#> other)
             => _index == other._index && Equals(_value, other._value);
 
         public override bool Equals(object obj)
@@ -175,7 +175,7 @@ namespace OneOf
                 return true;
             }
 
-            var other = obj as OneOfBase<<#=genericArg#>>;
+            var other = obj as <#=typeName#>;
             return other != null && Equals(other);
 <#
             }
@@ -183,7 +183,7 @@ namespace OneOf
             {
 #>
 
-            return obj is OneOf<#=typeEnding#><<#=genericArg #>> && Equals((OneOf<#=typeEnding#><<#=genericArg #>>) obj);
+            return obj is <#=typeName#> && Equals((<#=typeName#>) obj);
 <#
             }
 #>
