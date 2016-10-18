@@ -1,0 +1,156 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System.Collections.Generic" #>
+using System;
+
+namespace OneOf
+{
+<#
+    for (var i = 1; i < 10; i++)
+    {
+        var typeArguments = new List<string>();
+        for(var j = 0; j < i; j++)
+        {
+            typeArguments.Add($"T{j}");
+        }
+        var genericArg = String.Join(", ", typeArguments);
+#>
+    public struct OneOf<<#= genericArg #>> : IOneOf
+    {
+        private readonly object _value;
+        private readonly int _index;
+
+        private OneOf(object value, int index)
+        {
+            _value = value;
+            _index = index;
+        }
+
+        object IOneOf.Value
+            => _value;
+
+        private T Get<T>(int index)
+        {
+            if (index != _index)
+            {
+                throw new InvalidOperationException($"Cannot return as T{index} as result is T{_index}");
+            }
+            return (T)_value;
+        }
+<#
+        for (var j = 0; j < i; j++)
+        {
+#>
+
+        public bool IsT<#= j #>
+            => _index == <#= j #>;
+
+        public T<#= j #> AsT<#= j #>
+            => Get<T<#= j #>>(<#= j #>);
+
+        public static implicit operator OneOf<<#= genericArg #>> (T<#=j#> t)
+            => new OneOf<<#= genericArg #>>(t, <#= j #>);
+<#
+        }
+        var switchArguments = new List<string>();
+        for(var j = 0; j < i; j++)
+        {
+            switchArguments.Add($"Action<T{j}> f{j}");
+        }
+        var matchArgList0 = String.Join(", ", switchArguments);
+#>
+
+        public void Switch(<#= matchArgList0 #>)
+        {
+<#
+        for (var j = 0; j < i; j++)
+        {
+#>
+            if (IsT<#= j #> && f<#= j #> != null)
+            {
+                f<#= j #>(AsT<#= j #>);
+                return;
+            }
+
+<#
+        }
+#>
+            throw new InvalidOperationException();
+        }
+
+<#
+        var matchArguments = new List<string>();
+        for(var j = 0; j < i; j++)
+        {
+            matchArguments.Add($"Func<T{j}, TResult> f{j}");
+        }
+        var matchArgList = String.Join(", ", matchArguments);
+#>
+        public TResult Match<TResult>(<#= matchArgList #>)
+        {
+<#
+        for (var j = 0; j < i; j++)
+        {
+#>
+            if (IsT<#= j #> && f<#= j #> != null)
+            {
+                return f<#= j #>(AsT<#= j #>);
+            }
+
+<#
+        }
+#>
+            throw new InvalidOperationException();
+        }
+
+<#
+        matchArgList = String.Join(" = null, ", matchArguments);
+#>
+        public TResult MatchSome<TResult>(<#= matchArgList #> = null, Func<TResult> otherwise = null)
+        {
+<#
+        for (var j = 0; j < i; j++)
+        {
+#>
+            if (IsT<#= j #> && f<#= j #> != null)
+            {
+                return f<#= j #>(AsT<#= j #>);
+            }
+
+<#
+        }
+#>
+            if (otherwise != null)
+            {
+                return otherwise();
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        private bool Equals(OneOf<<#=genericArg#>> other)
+            => _index == other._index && Equals(_value, other._value);
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            return obj is OneOf<<#=genericArg#>> && Equals((OneOf<<#=genericArg#>>) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_value?.GetHashCode() ?? 0)*397) ^ _index;
+            }
+        }
+    }
+
+<#
+    }
+#>
+}
