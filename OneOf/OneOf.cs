@@ -117,7 +117,7 @@ namespace OneOf
     }
 
     public class OneOfBase<T0> : IOneOf
-    where T0 : class
+        where T0 : class
     {
         private readonly T0 _value0;
         private readonly int _index;
@@ -396,8 +396,8 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1> : IOneOf
-    where T0 : class
-    where T1 : class
+        where T0 : class
+        where T1 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -750,9 +750,9 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -1179,10 +1179,10 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -1683,11 +1683,11 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3, T4> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
-    where T4 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
+        where T4 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -2262,12 +2262,12 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3, T4, T5> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
-    where T4 : class
-    where T5 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
+        where T4 : class
+        where T5 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -2916,13 +2916,13 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3, T4, T5, T6> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
-    where T4 : class
-    where T5 : class
-    where T6 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
+        where T4 : class
+        where T5 : class
+        where T6 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -3645,14 +3645,14 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3, T4, T5, T6, T7> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
-    where T4 : class
-    where T5 : class
-    where T6 : class
-    where T7 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
+        where T4 : class
+        where T5 : class
+        where T6 : class
+        where T7 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;
@@ -4449,15 +4449,15 @@ namespace OneOf
     }
 
     public class OneOfBase<T0, T1, T2, T3, T4, T5, T6, T7, T8> : IOneOf
-    where T0 : class
-    where T1 : class
-    where T2 : class
-    where T3 : class
-    where T4 : class
-    where T5 : class
-    where T6 : class
-    where T7 : class
-    where T8 : class
+        where T0 : class
+        where T1 : class
+        where T2 : class
+        where T3 : class
+        where T4 : class
+        where T5 : class
+        where T6 : class
+        where T7 : class
+        where T8 : class
     {
         private readonly T0 _value0;
         private readonly T1 _value1;

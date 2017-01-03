@@ -6,55 +6,56 @@ using System;
 namespace OneOf
 {
 <#
-    for (var i = 1; i < 10; i++)
+const int maxTypeArguments = 9;
+for (var i = 1; i < (maxTypeArguments + 1); i++)
+{
+    for (var type = 0; type < 2; type++)
     {
-        for (var type = 0; type < 2; type++)
+        var constructorName = type == 0 ? "OneOf" : "OneOfBase";
+        var typeArguments = new List<string>();
+        for (var j = 0; j < i; j++)
         {
-            var constructorName = type == 0 ? "OneOf" : "OneOfBase";
-            var typeArguments = new List<string>();
-            for (var j = 0; j < i; j++)
-            {
-                typeArguments.Add($"T{j}");
-            }
-            var typeName = constructorName + $"<{String.Join(", ", typeArguments)}>";
-#>
-    public <#=type == 0 ? "struct" : "class"#> <#=typeName#> : IOneOf
-<#
-        if (type == 1)
-        {
-            for (var j = 0; j < i; j++)
-            {
-#>
-    where T<#=j#> : class
-<#
-            }
+            typeArguments.Add($"T{j}");
         }
+        var typeName = constructorName + $"<{String.Join(", ", typeArguments)}>";
+#>
+    public <#=type == 0 ? "struct" : "class" #> <#=typeName #> : IOneOf
+<#
+if (type == 1)
+{
+    for (var j = 0; j < i; j++)
+    {
+#>
+        where T<#=j #> : class
+<#
+    }
+}
 #>
     {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-        private readonly T<#=j#> _value<#=j#>;
+        private readonly T<#=j #> _value<#=j #>;
 <#
-            }
+}
 #>
         private readonly int _index;
 
-        private <#=constructorName#>(int index<#
-            for (var j = 0; j < i; j++)
-            {
-#>, T<#=j#> value<#=j#> = default(T<#=j#>)<#
-            }
+        private <#=constructorName #>(int index<#
+for (var j = 0; j < i; j++)
+{
+#>, T<#=j #> value<#=j #> = default(T<#=j #>)<#
+}
 #>)
         {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-            _value<#=j#> = value<#=j#>;
+            _value<#=j #> = value<#=j #>;
 <#
-            }
+}
 #>
             _index = index;
         }
@@ -66,13 +67,13 @@ namespace OneOf
                 switch(_index)
                 {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-                    case <#=j#>:
-                        return _value<#=j#>;
+                    case <#=j #>:
+                        return _value<#=j #>;
 <#
-            }
+}
 #>
                     default:
                         throw new InvalidOperationException();
@@ -80,88 +81,88 @@ namespace OneOf
             }
         }
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
 
-        public bool IsT<#=j#>
-            => _index == <#=j#>;
+        public bool IsT<#=j #>
+            => _index == <#=j #>;
 
-        public T<#=j#> AsT<#=j#>
-            => _value<#=j#>;
+        public T<#=j #> AsT<#=j #>
+            => _value<#=j #>;
 
-        public static implicit operator <#=typeName#> (T<#=j #> t)
-            => new <#=typeName#>(<#=j#>, value<#=j#>: t);
+        public static implicit operator <#=typeName #> (T<#=j #> t)
+            => new <#=typeName #>(<#=j #>, value<#=j #>: t);
 <#
-            }
-            var switchArguments = new List<string>();
-            for (var j = 0; j < i; j++)
-            {
-                switchArguments.Add($"Action<T{j}> f{j}");
-            }
-            var switchArgs = String.Join(", ", switchArguments);
+}
+var switchArguments = new List<string>();
+for (var j = 0; j < i; j++)
+{
+    switchArguments.Add($"Action<T{j}> f{j}");
+}
+var switchArgs = String.Join(", ", switchArguments);
 #>
 
-        public void Switch(<#=switchArgs#>)
+        public void Switch(<#=switchArgs #>)
         {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-            if (IsT<#=j#> && f<#=j#> != null)
+            if (IsT<#=j #> && f<#=j #> != null)
             {
-                f<#=j#>(_value<#=j#>);
+                f<#=j #>(_value<#=j #>);
                 return;
             }
 
 <#
-            }
+}
 #>
             throw new InvalidOperationException();
         }
 
 <#
-            var matchArguments = new List<string>();
-            for (var j = 0; j < i; j++)
-            {
-                matchArguments.Add($"Func<T{j}, TResult> f{j}");
-            }
-            var matchArgs = String.Join(", ", matchArguments);
+var matchArguments = new List<string>();
+for (var j = 0; j < i; j++)
+{
+    matchArguments.Add($"Func<T{j}, TResult> f{j}");
+}
+var matchArgs = String.Join(", ", matchArguments);
 #>
-        public TResult Match<TResult>(<#=matchArgs#>)
+        public TResult Match<TResult>(<#=matchArgs #>)
         {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-            if (IsT<#=j#> && f<#=j#> != null)
+            if (IsT<#=j #> && f<#=j #> != null)
             {
-                return f<#=j#>(_value<#=j#>);
+                return f<#=j #>(_value<#=j #>);
             }
 
 <#
-            }
+}
 #>
             throw new InvalidOperationException();
         }
 
 <#
-            const string ending = " = null, ";
-            matchArgs = String.Join(ending, matchArguments) + ending + "Func<TResult> otherwise = null";
+const string ending = " = null, ";
+matchArgs = String.Join(ending, matchArguments) + ending + "Func<TResult> otherwise = null";
 #>
-        public TResult MatchSome<TResult>(<#=matchArgs#>)
+        public TResult MatchSome<TResult>(<#=matchArgs #>)
         {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-            if (IsT<#=j#> && f<#=j#> != null)
+            if (IsT<#=j #> && f<#=j #> != null)
             {
-                return f<#=j#>(_value<#=j#>);
+                return f<#=j #>(_value<#=j #>);
             }
 
 <#
-            }
+}
 #>
             if (otherwise != null)
             {
@@ -171,31 +172,31 @@ namespace OneOf
             throw new InvalidOperationException();
         }
 <#
-            if(type == 1)
-            {
+if (type == 1)
+{
 #>
 
-        protected <#=constructorName#>()
+        protected <#=constructorName #>()
         {
 <#
-                for (var j = 0; j < i; j++)
-                {
+    for (var j = 0; j < i; j++)
+    {
 #>
-            var value<#=j#> = this as T<#=j#>;
-            if (value<#=j#> != null)
+            var value<#=j #> = this as T<#=j #>;
+            if (value<#=j #> != null)
             {
-                _index = <#=j#>;
-                _value<#=j#> = value<#=j#>;
+                _index = <#=j #>;
+                _value<#=j #> = value<#=j #>;
             }
 <#
-                }
+    }
 #>
         }
 <#
-            }
+}
 #>
 
-        private bool Equals(<#=typeName#> other)
+        private bool Equals(<#=typeName #> other)
         {
             if(_index != other._index)
             {
@@ -204,13 +205,13 @@ namespace OneOf
             switch(_index)
             {
 <#
-            for (var j = 0; j < i; j++)
-            {
+for (var j = 0; j < i; j++)
+{
 #>
-                case <#=j#>:
-                    return Equals(_value<#=j#>, other._value<#=j#>);
+                case <#=j #>:
+                    return Equals(_value<#=j #>, other._value<#=j #>);
 <#
-            }
+}
 #>
                 default:
                     return false;
@@ -224,8 +225,8 @@ namespace OneOf
                 return false;
             }
 <#
-            if(type == 1)
-            {
+if (type == 1)
+{
 #>
 
             if (ReferenceEquals(this, obj))
@@ -233,17 +234,17 @@ namespace OneOf
                 return true;
             }
 
-            var other = obj as <#=typeName#>;
+            var other = obj as <#=typeName #>;
             return other != null && Equals(other);
 <#
-            }
-            else
-            {
+}
+else
+{
 #>
 
-            return obj is <#=typeName#> && Equals((<#=typeName#>) obj);
+            return obj is <#=typeName #> && Equals((<#=typeName #>) obj);
 <#
-            }
+                }
 #>
         }
 
@@ -255,14 +256,14 @@ namespace OneOf
                 switch(_index)
                 {
 <#
-            for (var j = 0; j < i; j++)
-            {
+    for (var j = 0; j < i; j++)
+    {
 #>
-                    case <#=j#>:
-                        hashCode = _value<#=j#>.GetHashCode();
+                    case <#=j #>:
+                        hashCode = _value<#=j #>.GetHashCode();
                         break;
 <#
-            }
+                }
 #>
                     default:
                         hashCode = 0;
@@ -274,7 +275,7 @@ namespace OneOf
     }
 
 <#
-        }
     }
+}
 #>
 }
